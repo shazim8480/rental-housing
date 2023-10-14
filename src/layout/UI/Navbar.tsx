@@ -16,6 +16,7 @@ import {
   PhoneIcon,
   PlayCircleIcon,
 } from "@heroicons/react/20/solid";
+import Link from "next/link";
 
 const profileOptions = [
   {
@@ -51,7 +52,7 @@ const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="bg-white">
+    <header className="bg-indigo-100">
       <nav
         className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
         aria-label="Global"
@@ -77,26 +78,32 @@ const Navbar: React.FC = () => {
           </button>
         </div>
 
-        <div className="hidden lg:flex lg:flex-1 lg:space-x-6 lg:justify-center">
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-            Features
-          </a>
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-            Marketplace
-          </a>
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-            Company
-          </a>
+        <div className="hidden lg:flex lg:flex-1 lg:space-x-8 lg:justify-center">
+          <Link
+            href="/about-us"
+            className="text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100 py-1 px-4 rounded"
+          >
+            About Us
+          </Link>
+          <Link
+            href="/property-listings"
+            className="text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100 py-1 px-4 rounded"
+          >
+            Property Listings
+          </Link>
+          <Link
+            href="/seller"
+            className="text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100 py-1 px-4 rounded"
+          >
+            Become a Seller
+          </Link>
         </div>
 
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a
-            href="#"
-            className="text-sm font-semibold leading-6 text-gray-900 mr-6"
-          >
+        <button className="hidden lg:block bg-indigo-600 hover:bg-indigo-800 text-sm font-semibold leading-6 text-center text-indigo-50 mr-8 py-1 px-4 rounded">
+          <Link href="/">
             Log in <span aria-hidden="true">&rarr;</span>
-          </a>
-        </div>
+          </Link>
+        </button>
         {/* profile popover */}
         <Popover.Group className="hidden lg:flex lg:gap-x-2 lg:mr-12">
           <Popover className="relative">
@@ -125,13 +132,13 @@ const Navbar: React.FC = () => {
                       className="group relative flex items-center gap-x-6 rounded-md p-4 text-sm leading-3 hover:bg-gray-50"
                     >
                       <div className="flex-auto">
-                        <a
+                        <Link
                           href={item.href}
                           className="block font-semibold text-gray-900"
                         >
                           {item.name}
                           <span className="absolute inset-0" />
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   ))}
