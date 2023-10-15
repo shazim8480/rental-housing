@@ -1,10 +1,11 @@
+import Link from "next/link";
 import React from "react";
 
 const RentalCardSmall: React.FC = () => {
   return (
     <div className="w-full md:w-1/2 lg:w-1/2 p-4">
-      <a
-        href=""
+      <Link
+        href={`/property-listings/${"1"}`}
         className="c-card block bg-white shadow-md hover:shadow-xl rounded-lg overflow-hidden"
       >
         <div className="relative pb-48 overflow-hidden">
@@ -92,7 +93,7 @@ const RentalCardSmall: React.FC = () => {
             </span>
           </div>
         </div>
-      </a>
+      </Link>
     </div>
   );
 };

@@ -29,7 +29,7 @@ const PropertyListingsPage: NextPageWithLayout = () => {
   return (
     <div className="lg:grid lg:grid-cols-2 lg:place-items-center lg:gap-5 py-10 lg:pt-5 px-10 bg-slate-50">
       <div className="flex-1 w-full min-h-screen">
-        <h3 className="text-2xl font-bold tracking-wide mb-7 text-indigo-700 lg:text-3xl md:text-3xl text-center lg:text-left md:text-left">
+        <h3 className="text-2xl font-bold tracking-wide mb-5 text-indigo-700 lg:text-3xl md:text-3xl text-center lg:text-left md:text-left">
           Find your home, accordingly
         </h3>
         {/* filtering options */}
@@ -64,11 +64,11 @@ const PropertyListingsPage: NextPageWithLayout = () => {
       </div>
 
       {/* maps */}
-      <div className="w-full mt-10">
+      <div className="w-full mt-20">
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.521260322283!2d106.8195613507864!3d-6.194741395493371!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5390917b759%3A0x6b45e67356080477!2sPT%20Kulkul%20Teknologi%20Internasional!5e0!3m2!1sen!2sid!4v1601138221085!5m2!1sen!2sid"
-          width="600"
-          height="450"
+          width="100%"
+          height="100%"
           frameBorder="0"
           style={{
             border: 0,
@@ -76,7 +76,6 @@ const PropertyListingsPage: NextPageWithLayout = () => {
             height: "100vh",
             borderRadius: "8px",
           }}
-          // allowFullScreen=""
           aria-hidden="false"
           // tabIndex="0"
         />
