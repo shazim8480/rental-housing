@@ -7,9 +7,10 @@ import { RadioGroup } from "@headlessui/react";
 
 // fake db
 import { propertyData } from "@/lib/propertyData";
+import Link from "next/link";
 
 const breadcrumbs = [
-  { id: 1, name: "Property", href: "#" },
+  { id: 1, name: "Property Listings", href: "/property-listings" },
   { id: 2, name: "Rental", href: "#" },
 ];
 
@@ -34,12 +35,12 @@ const PropertyDetailsPage: NextPageWithLayout = () => {
             {breadcrumbs.map((breadcrumb) => (
               <li key={breadcrumb.id}>
                 <div className="flex items-center">
-                  <a
+                  <Link
                     href={breadcrumb.href}
                     className="mr-2 text-sm font-medium text-gray-900"
                   >
                     {breadcrumb.name}
-                  </a>
+                  </Link>
                   <svg
                     width={16}
                     height={20}
