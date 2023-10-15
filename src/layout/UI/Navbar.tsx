@@ -129,7 +129,7 @@ const Navbar: React.FC<{ isSearchBar?: React.ReactNode }> = ({
             href="/seller"
             className="text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100 py-1 px-4 rounded"
           >
-            Become a Seller
+            List Your Property
           </Link>
         </div>
 

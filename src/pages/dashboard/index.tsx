@@ -5,8 +5,10 @@ import DashboardLayout from "@/layout/dashboard/DashboardLayout";
 
 const DashboardPage: NextPageWithLayout = ({}) => {
   return (
-    <div>
-      <h1>Welcome to the dashboard</h1>
+    <div className="text-center flex min-h-screen items-center justify-center">
+      <h3>
+        Welcome to the dashboard, very soon you'll be able to see much contents!
+      </h3>
     </div>
   );
 };

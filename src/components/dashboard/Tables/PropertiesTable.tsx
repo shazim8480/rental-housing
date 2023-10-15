@@ -1,29 +1,13 @@
 // import { Package } from "@/types/package";
 
-const packageData: any = [
+const propertyData: any = [
   {
-    name: "Free package",
-    price: 0.0,
-    invoiceDate: `Jan 13,2023`,
-    status: "Approved",
-  },
-  {
-    name: "Standard Package",
-    price: 59.0,
-    invoiceDate: `Jan 13,2023`,
-    status: "Approved",
-  },
-  {
-    name: "Business Package",
-    price: 99.0,
-    invoiceDate: `Jan 13,2023`,
-    status: "Rejected",
-  },
-  {
-    name: "Standard Package",
-    price: 59.0,
-    invoiceDate: `Jan 13,2023`,
-    status: "Pending",
+    name: "Sahanaj Housing",
+    location: "Nagarkanda, Faridpur",
+    rentalFee: 12000,
+    listedDate: `Jan 13,2023`,
+    type: "Rental",
+    status: "Active",
   },
 ];
 
@@ -40,7 +24,9 @@ const PropertiesTable = () => {
               <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
                 Type
               </th>
-              <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white"></th>
+              <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
+                Listed On
+              </th>
               <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
                 Status
               </th>
@@ -50,36 +36,36 @@ const PropertiesTable = () => {
             </tr>
           </thead>
           <tbody>
-            {packageData.map((packageItem: any, key: any) => (
+            {propertyData.map((propertyItem: any, key: any) => (
               <tr key={key}>
                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                   <h5 className="font-medium text-gray-700 dark:text-white">
-                    {packageItem.name}
+                    {propertyItem?.name}
                   </h5>
-                  {/* <p className="text-sm">${packageItem.price}</p> */}
+                  <p className="text-sm">BDT {propertyItem?.rentalFee}/month</p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4   xl:pl-5">
                   <h5 className="font-medium text-gray-700 dark:text-white">
-                    {"Rony Housing"}
+                    {propertyItem?.type}
                   </h5>
-                  {/* <p className="text-sm">${packageItem.price}</p> */}
+                  {/* <p className="text-sm">${propertyItem?.price}</p> */}
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 ">
                   <p className="text-gray-700 dark:text-white">
-                    {packageItem.invoiceDate}
+                    {propertyItem?.listedDate}
                   </p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 ">
                   <p
                     className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
-                      packageItem.status === "Approved"
+                      propertyItem?.status === "Active"
                         ? "text-green-700 bg-green-500"
-                        : packageItem.status === "Rejected"
+                        : propertyItem?.status === "Removed"
                         ? "text-red-700 bg-red-500"
                         : "text-yellow-500 bg-yellow-400"
                     }`}
                   >
-                    {packageItem.status}
+                    {propertyItem?.status}
                   </p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 ">

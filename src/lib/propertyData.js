@@ -63,6 +63,3 @@ export const propertyData = {
     { name: "D-2", available: true },
   ],
 };
-
-// You can now use the 'propertyData' object in your JavaScript code.
-// console.log(propertyData);
