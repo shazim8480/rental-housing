@@ -22,7 +22,7 @@ const profileOptions = [
   {
     name: "Dashboard",
     description: "Get a better understanding of your traffic",
-    href: "#",
+    href: "/dashboard",
     icon: ChartPieIcon,
   },
   {
