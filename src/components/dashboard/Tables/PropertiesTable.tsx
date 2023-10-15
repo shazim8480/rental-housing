@@ -27,6 +27,9 @@ const PropertiesTable = () => {
               <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
                 Listed On
               </th>
+              <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
+                Location
+              </th>
               <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
                 Status
               </th>
@@ -53,6 +56,11 @@ const PropertiesTable = () => {
                 <td className="border-b border-[#eee] py-5 px-4 ">
                   <p className="text-gray-700 dark:text-white">
                     {propertyItem?.listedDate}
+                  </p>
+                </td>
+                <td className="border-b border-[#eee] py-5 px-4 ">
+                  <p className="text-amber-700 dark:text-white">
+                    {propertyItem?.location}
                   </p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 ">
