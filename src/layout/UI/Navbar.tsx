@@ -48,7 +48,9 @@ function classNames(
   return classes.filter(Boolean).join(" ");
 }
 
-const Navbar: React.FC = () => {
+const Navbar: React.FC<{ isSearchBar?: React.ReactNode }> = ({
+  isSearchBar,
+}) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -66,7 +68,39 @@ const Navbar: React.FC = () => {
               alt=""
             />
           </a>
+
+          {/* search bar */}
+          {isSearchBar ? (
+            <div className="hidden mx-auto text-gray-600 lg:flex lg:justify-start lg:items-center">
+              <input
+                className="border-1 w-72 border-gray-300 bg-white h-10 px-5  rounded-lg text-sm focus:outline-none"
+                type="search"
+                name="search"
+                placeholder="Enter Location or Property Name"
+              />
+              <button
+                type="submit"
+                className="ml-4 bg-indigo-600 py-2 px-3 rounded-lg"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="white"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                  />
+                </svg>
+              </button>
+            </div>
+          ) : null}
         </div>
+        {/* mobile menu onclick */}
         <div className="flex lg:hidden xl:hidden">
           <button
             type="button"
@@ -78,7 +112,7 @@ const Navbar: React.FC = () => {
           </button>
         </div>
 
-        <div className="hidden lg:flex lg:flex-1 lg:space-x-8 lg:justify-center">
+        <div className="hidden lg:flex lg:flex-1 lg:justify-center lg:items-center">
           <Link
             href="/about-us"
             className="text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100 py-1 px-4 rounded"

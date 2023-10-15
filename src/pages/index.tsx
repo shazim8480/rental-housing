@@ -15,7 +15,6 @@ const HomePage: NextPageWithLayout = () => {
       <Hero />
       <FeaturedProperties />
       <FAQ />
-      <Footer />
     </section>
   );
 };
