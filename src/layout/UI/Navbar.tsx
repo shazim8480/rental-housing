@@ -134,7 +134,7 @@ const Navbar: React.FC<{ isSearchBar?: React.ReactNode }> = ({
         </div>
 
         <button className="hidden lg:block bg-indigo-600 hover:bg-indigo-800 text-sm font-semibold leading-6 text-center text-indigo-50 mr-8 py-1 px-4 rounded">
-          <Link href="/">
+          <Link href="/login">
             Log in <span aria-hidden="true">&rarr;</span>
           </Link>
         </button>
@@ -259,12 +259,12 @@ const Navbar: React.FC<{ isSearchBar?: React.ReactNode }> = ({
                 </a>
               </div>
               <div className="py-6">
-                <a
-                  href="#"
+                <Link
+                  href="/login"
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Log in
-                </a>
+                </Link>
               </div>
             </div>
           </div>
