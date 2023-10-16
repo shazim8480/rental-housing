@@ -10,6 +10,6 @@ const config: Config = {
   theme: {
     darkMode: "class",
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/forms")],
 };
 export default config;
