@@ -83,7 +83,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           <div>
             <ul className="mb-6 flex flex-col gap-1.5">
               {/* <!-- Menu Item Dashboard --> */}
-              <SidebarLinkGroup
+              {/* <SidebarLinkGroup
                 activeCondition={
                   pathname === "/" || pathname.includes("/dashboard")
                 }
@@ -93,10 +93,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     <React.Fragment>
                       <Link
                         href="/dashboard"
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-indigo-700 duration-300 ease-in-out hover:bg-indigo-200 ${
-                          (pathname === "/" ||
-                            pathname.includes("/dashboard")) &&
-                          "bg-indigo-100"
+                        className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-indigo-700 duration-300 ease-in-out hover:bg-indigo-200 ${
+                          pathname.includes("/dashboard") && "bg-indigo-200"
                         }`}
                         // onClick={(e) => {
                         //   e.preventDefault();
@@ -135,16 +133,15 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     </React.Fragment>
                   );
                 }}
-              </SidebarLinkGroup>
+              </SidebarLinkGroup> */}
               {/* <!-- Menu Item Dashboard --> */}
 
               {/* <!-- Menu Item Users --> */}
               <li>
                 <Link
                   href="/dashboard/users"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-indigo-700 duration-300 ease-in-out hover:bg-indigo-200 dark:hover:bg-meta-4 ${
-                    pathname.includes("profile") &&
-                    "bg-indigo-800 dark:bg-meta-4"
+                  className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-indigo-700 duration-300 ease-in-out hover:bg-indigo-200 dark:hover:bg-meta-4 ${
+                    pathname.includes("users") && "bg-indigo-200"
                   }`}
                 >
                   <svg
@@ -181,9 +178,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <Link
                   href="/dashboard/properties"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-indigo-700 duration-300 ease-in-out hover:bg-indigo-200 dark:hover:bg-meta-4 ${
-                    pathname.includes("profile") &&
-                    "bg-indigo-800 dark:bg-meta-4"
+                  className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-indigo-700 duration-300 ease-in-out hover:bg-indigo-200 dark:hover:bg-meta-4 ${
+                    pathname.includes("properties") &&
+                    "bg-indigo-200 dark:bg-meta-4"
                   }`}
                 >
                   <svg
@@ -203,9 +200,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <Link
                   href="/dashboard/profile"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-indigo-700 duration-300 ease-in-out hover:bg-indigo-200 dark:hover:bg-meta-4 ${
-                    pathname.includes("profile") &&
-                    "bg-indigo-800 dark:bg-meta-4"
+                  className={`group relative flex items-center gap-3 rounded-sm py-2 px-4 font-medium text-indigo-700 duration-300 ease-in-out hover:bg-indigo-200 dark:hover:bg-meta-4 ${
+                    pathname.includes("profile") && "bg-indigo-200 "
                   }`}
                 >
                   <svg

@@ -75,11 +75,11 @@ const DropdownUser = () => {
         ref={dropdown}
         onFocus={() => setDropdownOpen(true)}
         onBlur={() => setDropdownOpen(false)}
-        className={`absolute right-0 mt-4 flex w-[200px] flex-col rounded-sm border border-stroke  bg-indigo-50 shadow-default  ${
+        className={`absolute right-0 mt-4 flex w-[200px] flex-col rounded-sm border border-stroke bg-white shadow-default  ${
           dropdownOpen === true ? "block" : "hidden"
         }`}
       >
-        <ul className="flex flex-col gap-5 border-b border-stroke px-6 py-4 hover:bg-indigo-200">
+        <ul className="flex flex-col gap-5 border-b border-stroke px-6 py-4 hover:bg-indigo-100">
           <li>
             <Link
               href="/dashboard/profile"
