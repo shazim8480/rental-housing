@@ -1,5 +1,5 @@
 export const propertyData = {
-  title: "Modern Villa with Ocean View",
+  title: "Ashikur Housing",
   description:
     "A luxurious and spacious villa with breathtaking views of the ocean. Perfect for a relaxing getaway.",
   images: [
@@ -30,9 +30,9 @@ export const propertyData = {
     zipCode: "12345",
   },
   contact: {
-    name: "John Doe",
-    email: "john@example.com",
-    phone: "+1 (555) 123-4567",
+    name: "Adnan",
+    email: "test@gmail.com",
+    phone: "+880-1521251999",
   },
   reviews: [
     {
