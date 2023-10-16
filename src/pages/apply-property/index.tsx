@@ -6,7 +6,6 @@ import MainLayout from "@/layout/main/MainLayout";
 
 // components
 import { NextPageWithLayout } from "../_app";
-import Footer from "@/layout/UI/Footer";
 
 const PropertyApplyPage: NextPageWithLayout = () => {
   return (
