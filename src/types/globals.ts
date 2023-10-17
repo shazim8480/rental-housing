@@ -1,7 +1,8 @@
 export interface IProperty {
+  _id: string;
   title?: string;
   description?: string;
-  images?: { src?: string }[];
+  images: { src?: string }[];
   pricing?: { monthly: number };
   availability?: { available?: boolean; dates?: string[] };
   location?: {

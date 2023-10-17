@@ -1,18 +1,26 @@
+import { IProperty } from "@/types/globals";
 import Link from "next/link";
 import React from "react";
 
-const RentalCardSmall: React.FC = () => {
+interface RentalCardProps {
+  property: IProperty;
+}
+
+const RentalCardSmall: React.FC<RentalCardProps> = ({ property }) => {
+  // destructuring necessary property data from props
+  const { _id, title, images, pricing, additionalDetails } = property;
+
   return (
     <div className="w-full md:w-1/2 lg:w-1/2 p-4">
       <Link
-        href={`/property-listings/${"1"}`}
+        href={`/property-listings/${_id}`}
         className="c-card block bg-white shadow-md hover:shadow-xl rounded-lg overflow-hidden"
       >
         <div className="relative pb-48 overflow-hidden">
           <img
             className="absolute inset-0 h-full w-full object-cover"
-            src="https://images.unsplash.com/photo-1475855581690-80accde3ae2b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"
-            alt=""
+            src={images[0]?.src}
+            alt="housing"
           />
         </div>
         <div className="p-3">
@@ -33,12 +41,14 @@ const RentalCardSmall: React.FC = () => {
               <span className="ml-2">4.9</span>
             </div>
           </div>
-          <h2 className="mt-4 mb-2 text-slate-600 font-semibold">
-            Rony Housing
-          </h2>
+          {/* property title */}
+          <h2 className="mt-4 mb-2 text-slate-600 font-semibold">{title}</h2>
+          {/* rental fee */}
           <div className="mt-3 flex items-center">
             <span className="text-sm font-semibold">BDT</span>&nbsp;
-            <span className="font-bold text-indigo-700 text-xl">5,000</span>
+            <span className="font-bold text-indigo-700 text-xl">
+              {pricing?.monthly}
+            </span>
             &nbsp;
             <span className="text-sm font-semibold">/ Month</span>
           </div>
@@ -59,7 +69,7 @@ const RentalCardSmall: React.FC = () => {
                   clipRule="evenodd"
                 />
               </svg>
-              3 Bed
+              {additionalDetails?.bedrooms} Bed
             </span>
             <span className="flex items-center mb-1 ml-3">
               <svg
@@ -74,7 +84,7 @@ const RentalCardSmall: React.FC = () => {
                   clipRule="evenodd"
                 />
               </svg>
-              2 Bath
+              {additionalDetails?.bathrooms} Bath
             </span>
             <span className="flex items-center mb-1 ml-3">
               <svg
@@ -89,7 +99,7 @@ const RentalCardSmall: React.FC = () => {
                   clipRule="evenodd"
                 />
               </svg>
-              1200 Sqft
+              {additionalDetails?.size}
             </span>
           </div>
         </div>

@@ -13,9 +13,11 @@ const propertiesApi = api.injectEndpoints({
       query: () => GET_ALL_PROPERTIES_URL,
       providesTags: ["properties"],
     }),
+
     getSingleProperty: builder.query({
       query: (id) => `${GET_PROPERTY_BY_ID_URL}/${id}`,
     }),
+
     addProperty: builder.mutation({
       query: (data) => ({
         url: `${ADD_PROPERTY_URL}`,
@@ -24,6 +26,7 @@ const propertiesApi = api.injectEndpoints({
       }),
       invalidatesTags: ["properties"],
     }),
+
     updateProperty: builder.mutation({
       query: ({ id, data }) => ({
         url: `${UPDATE_PROPERTY_BY_ID_URL}/${id}`,
@@ -32,6 +35,7 @@ const propertiesApi = api.injectEndpoints({
       }),
       invalidatesTags: ["properties"],
     }),
+
     deleteProperty: builder.mutation({
       query: (id) => ({
         url: `${DELETE_PROPERTY_URL}/${id}`,
@@ -39,18 +43,6 @@ const propertiesApi = api.injectEndpoints({
       }),
       invalidatesTags: ["properties"],
     }),
-    // postReview: builder.mutation({
-    //   query: ({ id, data }) => ({
-    //     url: `/comment/${id}`,
-    //     method: "POST",
-    //     body: data,
-    //   }),
-    //   invalidatesTags: ["reviews"],
-    // }),
-    // getReviews: builder.query({
-    //   query: (id) => `/comment/${id}`,
-    //   providesTags: [""],
-    // }),
   }),
 });
 

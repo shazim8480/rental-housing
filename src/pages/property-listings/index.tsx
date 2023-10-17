@@ -3,6 +3,8 @@ import { ReactElement, useState } from "react";
 import { NextPageWithLayout } from "../_app";
 import Dropdown from "@/components/shared/Dropdown";
 import RentalCardSmall from "@/components/RentalCardSmall";
+import { useGetAllPropertiesQuery } from "@/redux/feature/properties/properties-api";
+import { IProperty } from "@/types/globals";
 
 // dropdown data //
 const priceData = [
@@ -25,6 +27,8 @@ const PropertyListingsPage: NextPageWithLayout = () => {
   const [priceSelect, setPriceSelect] = useState(priceData[0]);
   const [bedsSelect, setBedsSelect] = useState(bedTypeData[0]);
   const [homeTypeSelect, setHomeTypeSelect] = useState(homeTypeData[0]);
+
+  const { data: propertyData } = useGetAllPropertiesQuery(undefined);
 
   return (
     <div className="lg:grid lg:grid-cols-2 lg:place-items-center lg:gap-5 py-10 lg:pt-5 px-10 bg-slate-50">
@@ -53,10 +57,9 @@ const PropertyListingsPage: NextPageWithLayout = () => {
         {/* rentals list */}
         <div className="container mx-auto">
           <div className="flex flex-wrap -mx-4">
-            <RentalCardSmall />
-            <RentalCardSmall />
-            <RentalCardSmall />
-            <RentalCardSmall />
+            {propertyData?.data?.map((property: IProperty, index: string) => {
+              return <RentalCardSmall key={index} property={property} />;
+            })}
           </div>
         </div>
         {/* pagination*/}

@@ -1,19 +1,80 @@
 import React, { useEffect, useState } from "react";
-
+import { useForm } from "react-hook-form";
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { propertyData } from "@/lib/propertyData";
 import moment from "moment";
+import { IProperty } from "@/types/globals";
+import { useRegisterUserMutation } from "@/redux/feature/registered-users/registered-users-api";
 
-const ApplyPropertyForm = () => {
+type RegisterFormProps = React.HTMLAttributes<HTMLDivElement> & {
+  propertyDetails: any;
+};
+
+interface RegisterFormPropsInputs {}
+
+// const ApplyPropertyForm: React.FC = ({ propertyDetails }: any) => {
+const ApplyPropertyForm: React.FC<RegisterFormProps> = (
+  props: RegisterFormProps
+) => {
+  const {
+    register,
+    formState: { errors },
+  } = useForm<RegisterFormPropsInputs>();
   const [selectedDate, setSelectedDate] = useState<string>("");
 
-  // Effect to set today's date on component mount
+  const [selectedUnit, setSelectedUnit] = useState("");
+
+  const { propertyDetails } = props;
+
+  const { title, units, location, contact } = propertyDetails;
+
+  // query to register user
+  const [registerUser] = useRegisterUserMutation();
+
+  const [formData, setFormData] = useState({
+    propertyName: title,
+    ownerName: contact?.name,
+    ownerEmail: contact?.email,
+    location: `${location?.streetAddress}, ${location?.district}, ${location?.division}, ${location?.zipCode}`,
+    selectedUnit: selectedUnit,
+    firstName: "",
+    lastName: "",
+    email: "",
+    country: "",
+    city: "",
+    division: "",
+    streetAddress: "",
+    postalCode: "",
+  });
+
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData((prevData: any) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleUnitChange = (e: any) => {
+    const { value } = e.target;
+    setSelectedUnit(value); // Update the selectedUnit state
+    setFormData((prevData) => ({ ...prevData, selectedUnit: value }));
+  };
+
+  // submit user data for
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    // Exclude a specific input value (e.g., email) from the formData
+    const { location, ...formDataWithoutLocation } = formData;
+    console.log(formDataWithoutLocation);
+    registerUser(formData);
+  };
+
   useEffect(() => {
     const today = moment().format("DD MMM YYYY");
     setSelectedDate(today);
   }, []);
+
+  // const today = moment().format("DD MMM YYYY");
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <div className="space-y-12 px-10">
         <div className="border-b border-gray-900/10 py-12">
           <h3 className="text-base lg:text-xl font-semibold leading-7 text-gray-900">
@@ -41,7 +102,7 @@ const ApplyPropertyForm = () => {
                   autoComplete="first-name"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   disabled={true}
-                  defaultValue={"Rony Housing"}
+                  defaultValue={title}
                 />
               </div>
             </div>
@@ -61,7 +122,7 @@ const ApplyPropertyForm = () => {
                   autoComplete="location"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   disabled={true}
-                  defaultValue={`${propertyData?.location?.streetAddress}, ${propertyData?.location?.district}, ${propertyData?.location?.division}, ${propertyData?.location?.zipCode}`}
+                  defaultValue={`${location?.streetAddress}, ${location?.district}, ${location?.division}, ${location?.zipCode}`}
                 />
               </div>
             </div>
@@ -81,28 +142,38 @@ const ApplyPropertyForm = () => {
                   autoComplete="tenant"
                   disabled={true}
                   className="block pl-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  defaultValue={"Md Ashikur Rahman"}
+                  defaultValue={contact?.name}
                 />
               </div>
             </div>
 
-            {/* selected unit */}
+            {/* select unit */}
             <div className="md:col-span-3 col-span-3 lg:col-span-1">
               <label
-                htmlFor="unit"
-                className="block mb-2 text-sm font-medium leading-6 text-gray-900"
+                htmlFor="selectedUnit"
+                className="block mb-2 text-sm font-medium leading-6 text-red-600"
               >
-                Selected Unit
+                Select Unit
               </label>
               <div className="">
                 <select
-                  disabled={true}
-                  id="unit"
-                  name="unit"
-                  autoComplete="unit"
+                  // disabled={true}
+                  id="selectedUnit"
+                  name="selectedUnit"
+                  autoComplete="selectedUnit"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                  value={selectedUnit}
+                  onChange={handleUnitChange}
+                  onBlur={(e) => e.preventDefault()}
+                  required
                 >
-                  <option>B-2</option>
+                  {units?.map((unit: any, index: string) => {
+                    return (
+                      unit?.available === true && (
+                        <option key={index}>{unit?.name}</option>
+                      )
+                    );
+                  })}
                 </select>
               </div>
             </div>
@@ -164,7 +235,7 @@ const ApplyPropertyForm = () => {
             {/* First name */}
             <div className="col-span-3">
               <label
-                htmlFor="first-name"
+                htmlFor="firstName"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 First name
@@ -172,17 +243,20 @@ const ApplyPropertyForm = () => {
               <div className="mt-2">
                 <input
                   type="text"
-                  name="first-name"
-                  id="first-name"
-                  autoComplete="given-name"
+                  name="firstName"
+                  id="firstName"
+                  autoComplete="firstName"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  value={formData.firstName}
+                  onChange={handleInputChange}
+                  required
                 />
               </div>
             </div>
             {/* last name */}
             <div className="col-span-3">
               <label
-                htmlFor="last-name"
+                htmlFor="lastName"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 Last name
@@ -190,10 +264,13 @@ const ApplyPropertyForm = () => {
               <div className="mt-2">
                 <input
                   type="text"
-                  name="last-name"
-                  id="last-name"
-                  autoComplete="family-name"
+                  name="lastName"
+                  id="lastName"
+                  autoComplete="lastName"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  value={formData.lastName}
+                  onChange={handleInputChange}
+                  required
                 />
               </div>
             </div>
@@ -213,6 +290,9 @@ const ApplyPropertyForm = () => {
                   type="email"
                   autoComplete="email"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required
                 />
               </div>
             </div>
@@ -231,8 +311,14 @@ const ApplyPropertyForm = () => {
                   name="country"
                   autoComplete="country-name"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                  value={formData.country}
+                  onChange={handleInputChange}
+                  required
                 >
-                  <option>Bangladesh</option>
+                  <option value="" disabled>
+                    Select a country
+                  </option>
+                  <option value="Bangladesh">Bangladesh</option>
                 </select>
               </div>
             </div>
@@ -252,6 +338,9 @@ const ApplyPropertyForm = () => {
                   id="city"
                   autoComplete="address-level2"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  value={formData.city}
+                  onChange={handleInputChange}
+                  required
                 />
               </div>
             </div>
@@ -259,7 +348,7 @@ const ApplyPropertyForm = () => {
             {/* division */}
             <div className="md:col-span-3 col-span-3 lg:col-span-1">
               <label
-                htmlFor="city"
+                htmlFor="division"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 Division
@@ -267,10 +356,13 @@ const ApplyPropertyForm = () => {
               <div className="mt-2">
                 <input
                   type="text"
-                  name="city"
-                  id="city"
+                  name="division"
+                  id="division"
                   autoComplete="address-level2"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  value={formData.division}
+                  onChange={handleInputChange}
+                  required
                 />
               </div>
             </div>
@@ -278,18 +370,21 @@ const ApplyPropertyForm = () => {
             {/* postal code */}
             <div className="md:col-span-3 col-span-3 lg:col-span-1">
               <label
-                htmlFor="postal-code"
+                htmlFor="postalCode"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 ZIP / Postal code
               </label>
               <div className="mt-2">
                 <input
-                  type="text"
-                  name="postal-code"
-                  id="postal-code"
-                  autoComplete="postal-code"
+                  type="number"
+                  name="postalCode"
+                  id="postalCode"
+                  autoComplete="postalCode"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  value={formData.postalCode}
+                  onChange={handleInputChange}
+                  required
                 />
               </div>
             </div>
@@ -297,7 +392,7 @@ const ApplyPropertyForm = () => {
             {/* Street address */}
             <div className="col-span-full">
               <label
-                htmlFor="street-address"
+                htmlFor="streetAddress"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 Street Address
@@ -305,11 +400,13 @@ const ApplyPropertyForm = () => {
               <div className="mt-2">
                 <textarea
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  name="street-address"
-                  id="street-address"
+                  name="streetAddress"
+                  id="streetAddress"
                   rows={6}
                   placeholder="Street Address"
-                  defaultValue=""
+                  value={formData.streetAddress}
+                  onChange={handleInputChange}
+                  required
                 />
               </div>
             </div>

@@ -1,17 +1,20 @@
 import MainLayout from "@/layout/main/MainLayout";
 import React, { ReactElement, useState } from "react";
 import { NextPageWithLayout } from "../_app";
+import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
+import { useRouter } from "next/router";
 
 import { StarIcon } from "@heroicons/react/20/solid";
 import { RadioGroup } from "@headlessui/react";
 
 // fake db
-import { propertyData } from "@/lib/propertyData";
 import Link from "next/link";
+import { IProperty } from "@/types/globals";
+import { GET_PROPERTY_BY_ID_URL, PROTOCOL_HOST } from "@/constants/url";
 
 const breadcrumbs = [
   { id: 1, name: "Property Listings", href: "/property-listings" },
-  { id: 2, name: "Rental", href: "#" },
+  { id: 2, name: "Rental", href: "/property-listings" },
 ];
 
 const reviews = { href: "#", average: 4, totalCount: 117 };
@@ -20,8 +23,36 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
-const PropertyDetailsPage: NextPageWithLayout = () => {
-  const [selectedUnit, setSelectedUnit] = useState(propertyData?.units[2]);
+const PropertyDetailsPage: NextPageWithLayout = ({ propertyDetails }: any) => {
+  const {
+    _id,
+    title,
+    description,
+    images,
+    pricing,
+    location,
+    contact,
+    additionalDetails,
+    units,
+  } = propertyDetails;
+  // console.log("propertyDetails", propertyDetails);
+
+  const [selectedUnit, setSelectedUnit] = useState<any>(null);
+
+  console.log("Selected unit", selectedUnit);
+
+  const router = useRouter();
+
+  // const handleRegisterProperty = () => {
+  //   if (selectedUnit) {
+  //     router.push({
+  //       pathname: `/property-listings/${_id}`,
+  //       query: { selected_unit: selectedUnit?.name },
+  //     });
+  //   } else {
+  //     alert("You must select a unit!");
+  //   }
+  // };
 
   return (
     <div className="bg-white">
@@ -60,7 +91,7 @@ const PropertyDetailsPage: NextPageWithLayout = () => {
                 aria-current="page"
                 className="font-medium text-gray-500 hover:text-gray-600"
               >
-                {propertyData?.title}
+                {title}
               </a>
             </li>
           </ol>
@@ -70,7 +101,7 @@ const PropertyDetailsPage: NextPageWithLayout = () => {
         <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
           <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
             <img
-              src={propertyData.images[0].src}
+              src={images[0]?.src}
               alt="rental"
               className="h-full w-full object-cover object-center"
             />
@@ -78,14 +109,14 @@ const PropertyDetailsPage: NextPageWithLayout = () => {
           <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
             <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
               <img
-                src={propertyData.images[1].src}
+                src={images[1]?.src}
                 alt="rental"
                 className="h-full w-full object-cover object-center"
               />
             </div>
             <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
               <img
-                src={propertyData.images[2].src}
+                src={images[2].src}
                 alt="rental"
                 className="h-full w-full object-cover object-center"
               />
@@ -93,18 +124,18 @@ const PropertyDetailsPage: NextPageWithLayout = () => {
           </div>
           <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
             <img
-              src={propertyData.images[3].src}
+              src={images[3].src}
               alt="rental"
               className="h-full w-full object-cover object-center"
             />
           </div>
         </div>
 
-        {/* Product info */}
+        {/* property info */}
         <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
           <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
             <h3 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-              {propertyData.title}
+              {title}
             </h3>
           </div>
 
@@ -112,7 +143,7 @@ const PropertyDetailsPage: NextPageWithLayout = () => {
           <div className="mt-4 lg:row-span-3 lg:mt-0">
             <h3 className="sr-only">Property information</h3>
             <p className="text-3xl tracking-tight text-gray-900">
-              BDT {propertyData?.pricing?.monthly}/mth
+              BDT {pricing?.monthly}/mth
             </p>
 
             {/* Reviews */}
@@ -144,48 +175,6 @@ const PropertyDetailsPage: NextPageWithLayout = () => {
             </div>
 
             <form className="mt-10">
-              {/* Colors */}
-              {/* <div>
-                <h3 className="text-sm font-medium text-gray-900">Color</h3>
-
-                <RadioGroup
-                  value={selectedColor}
-                  onChange={setSelectedColor}
-                  className="mt-4"
-                >
-                  <RadioGroup.Label className="sr-only">
-                    Choose a color
-                  </RadioGroup.Label>
-                  <div className="flex items-center space-x-3">
-                    {product.colors.map((color) => (
-                      <RadioGroup.Option
-                        key={color.name}
-                        value={color}
-                        className={({ active, checked }) =>
-                          classNames(
-                            color.selectedClass,
-                            active && checked ? "ring ring-offset-1" : "",
-                            !active && checked ? "ring-2" : "",
-                            "relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none"
-                          )
-                        }
-                      >
-                        <RadioGroup.Label as="span" className="sr-only">
-                          {color.name}
-                        </RadioGroup.Label>
-                        <span
-                          aria-hidden="true"
-                          className={classNames(
-                            color.class,
-                            "h-8 w-8 rounded-full border border-black border-opacity-10"
-                          )}
-                        />
-                      </RadioGroup.Option>
-                    ))}
-                  </div>
-                </RadioGroup>
-              </div> */}
-
               {/* Units */}
               <div className="mt-10">
                 <div className="flex items-center justify-between">
@@ -199,7 +188,7 @@ const PropertyDetailsPage: NextPageWithLayout = () => {
                     Units selection guide
                   </a>
                 </div>
-
+                {/* select units  */}
                 <RadioGroup
                   value={selectedUnit}
                   onChange={setSelectedUnit}
@@ -209,7 +198,7 @@ const PropertyDetailsPage: NextPageWithLayout = () => {
                     Choose an available unit
                   </RadioGroup.Label>
                   <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
-                    {propertyData?.units.map((unit) => (
+                    {units?.map((unit: any) => (
                       <RadioGroup.Option
                         key={unit.name}
                         value={unit}
@@ -269,7 +258,7 @@ const PropertyDetailsPage: NextPageWithLayout = () => {
                 </RadioGroup>
               </div>
               {/* proceed to apply  */}
-              <Link href={"/apply-property"}>
+              <Link href={`/apply-property/${_id}`}>
                 <button
                   type="submit"
                   className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -286,9 +275,7 @@ const PropertyDetailsPage: NextPageWithLayout = () => {
               <h3 className="sr-only">Description</h3>
 
               <div className="space-y-6">
-                <p className="text-base text-gray-900">
-                  {propertyData?.description}
-                </p>
+                <p className="text-base text-gray-900">{description}</p>
               </div>
             </div>
             {/* Amenities */}
@@ -296,7 +283,7 @@ const PropertyDetailsPage: NextPageWithLayout = () => {
               <h3 className="text-sm font-medium text-gray-900">Amenities</h3>
               <div className="mt-4">
                 <ul role="list" className="list-disc space-y-2 pl-4 text-sm">
-                  {propertyData?.additionalDetails?.amenities.map((amenity) => (
+                  {additionalDetails?.amenities?.map((amenity: any) => (
                     <li key={amenity} className="text-gray-400">
                       <span className="text-gray-600">{amenity}</span>
                     </li>
@@ -312,12 +299,11 @@ const PropertyDetailsPage: NextPageWithLayout = () => {
 
               <div className="mt-4 space-y-3">
                 <p className="text-sm text-gray-600">
-                  {propertyData?.location.streetAddress}
+                  {location?.streetAddress}
                 </p>
                 <p className="text-sm text-gray-600">
-                  {propertyData?.location.district},{" "}
-                  {propertyData?.location.division},{" "}
-                  {propertyData?.location.zipCode}
+                  {location?.district}, {location?.division},{" "}
+                  {location?.zipCode}
                 </p>
               </div>
             </div>
@@ -328,15 +314,9 @@ const PropertyDetailsPage: NextPageWithLayout = () => {
               </h3>
 
               <div className="mt-4 space-y-3">
-                <p className="text-sm text-gray-600">
-                  {propertyData?.contact.name}
-                </p>
-                <p className="text-sm text-gray-600">
-                  {propertyData?.contact.email}
-                </p>
-                <p className="text-sm text-gray-600">
-                  {propertyData?.contact.phone}
-                </p>
+                <p className="text-sm text-gray-600">{contact?.name}</p>
+                <p className="text-sm text-gray-600">{contact?.email}</p>
+                <p className="text-sm text-gray-600">{contact?.phone}</p>
               </div>
             </div>
           </div>
@@ -352,36 +332,16 @@ PropertyDetailsPage.getLayout = function (page: ReactElement) {
   return <MainLayout>{page}</MainLayout>;
 };
 
-// export async function getStaticPaths() {
-//   const res = await fetch("https://next-pc-server.onrender.com/api/products");
-//   const productsData = await res.json();
-//   // console.log("static paths data", productsData);
+export const getServerSideProps = (async (context) => {
+  const { params } = context;
+  const res = await fetch(
+    `http://localhost:8000/api/property/${params?.propertyID}`
+  );
+  const propertyDetails: IProperty = await res.json();
 
-//   const paths = productsData?.data?.map((product: any) => ({
-//     params: {
-//       productID: product?._id, // productID => same name as the file
-//     },
-//   }));
+  // console.log("propertyDetails on server", propertyDetails);
 
-//   // console.log("static paths data", paths);
-
-//   return { paths, fallback: false };
-// }
-
-// export async function getStaticProps(context: any) {
-//   // context => receive the params from static paths
-//   const { params } = context;
-//   const res = await fetch(
-//     `https://next-pc-server.onrender.com/api/products/${params?.productID}`
-//   );
-
-//   const product = await res.json();
-//   console.log("get prod", product);
-
-//   return {
-//     props: {
-//       product,
-//     },
-//     revalidate: 10,
-//   };
-// }
+  return { props: { propertyDetails } };
+}) satisfies GetServerSideProps<{
+  propertyDetails: IProperty;
+}>;
