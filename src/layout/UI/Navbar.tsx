@@ -17,6 +17,7 @@ import {
   PlayCircleIcon,
 } from "@heroicons/react/20/solid";
 import Link from "next/link";
+import { useAppSelector } from "@/redux/hooks";
 
 const profileOptions = [
   {
@@ -52,6 +53,10 @@ const Navbar: React.FC<{ isSearchBar?: React.ReactNode }> = ({
   isSearchBar,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  //  const {user} = useAppSelector((state) => state.user);
+
+  //  console.log("user info", user);
 
   return (
     <header className="bg-indigo-100">
