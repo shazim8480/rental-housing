@@ -22,6 +22,8 @@ const ApplyPropertyForm: React.FC<RegisterFormProps> = (
   } = useForm<RegisterFormPropsInputs>();
   const [selectedDate, setSelectedDate] = useState<string>("");
 
+  // console.log(selectedDate);
+
   const [selectedUnit, setSelectedUnit] = useState("");
 
   const { propertyDetails } = props;
@@ -37,6 +39,7 @@ const ApplyPropertyForm: React.FC<RegisterFormProps> = (
     ownerEmail: contact?.email,
     location: `${location?.streetAddress}, ${location?.district}, ${location?.division}, ${location?.zipCode}`,
     selectedUnit: selectedUnit,
+    registrationDate: "",
     firstName: "",
     lastName: "",
     email: "",
@@ -45,6 +48,7 @@ const ApplyPropertyForm: React.FC<RegisterFormProps> = (
     division: "",
     streetAddress: "",
     postalCode: "",
+    status: "pending",
   });
 
   const handleInputChange = (e: any) => {
@@ -58,6 +62,12 @@ const ApplyPropertyForm: React.FC<RegisterFormProps> = (
     setFormData((prevData) => ({ ...prevData, selectedUnit: value }));
   };
 
+  const handleDateChange = (e: any) => {
+    const { name, value } = e.target;
+    setSelectedDate(value);
+    setFormData((prevData: any) => ({ ...prevData, [name]: value }));
+  };
+
   // submit user data for
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -67,10 +77,10 @@ const ApplyPropertyForm: React.FC<RegisterFormProps> = (
     registerUser(formData);
   };
 
-  useEffect(() => {
-    const today = moment().format("DD MMM YYYY");
-    setSelectedDate(today);
-  }, []);
+  // useEffect(() => {
+  //   const today = moment().format("DD MMM YYYY");
+  //   setSelectedDate(today);
+  // }, []);
 
   // const today = moment().format("DD MMM YYYY");
   return (
@@ -201,20 +211,21 @@ const ApplyPropertyForm: React.FC<RegisterFormProps> = (
             {/* Reg date */}
             <div className="md:col-span-3 col-span-3 lg:col-span-1">
               <label
-                htmlFor="date"
+                htmlFor="registrationDate"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 Registration date
               </label>
               <div className="mt-2">
                 <input
-                  type="text"
-                  name="size"
-                  id="size"
-                  autoComplete="address-level2"
+                  type="date"
+                  name="registrationDate"
+                  id="registrationDate"
+                  autoComplete="registrationDate"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   value={selectedDate}
-                  disabled={true}
+                  onChange={handleDateChange}
+                  // disabled={true}
                 />
               </div>
             </div>
