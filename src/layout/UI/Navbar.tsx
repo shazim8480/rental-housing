@@ -1,28 +1,22 @@
+"use client";
 import React from "react";
 // import Link from "next/link";
 import { Fragment, useState } from "react";
 import { Dialog, Disclosure, Popover, Transition } from "@headlessui/react";
 import {
-  ArrowPathIcon,
   Bars3Icon,
   ChartPieIcon,
-  CursorArrowRaysIcon,
-  FingerPrintIcon,
-  SquaresPlusIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import {
-  ChevronDownIcon,
-  PhoneIcon,
-  PlayCircleIcon,
-} from "@heroicons/react/20/solid";
+import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
+
 import { useAppSelector } from "@/redux/hooks";
 
 const profileOptions = [
   {
     name: "Dashboard",
-    description: "Get a better understanding of your traffic",
+    description: "Get a better understanding of your profile",
     href: "/dashboard",
     icon: ChartPieIcon,
   },
@@ -54,9 +48,9 @@ const Navbar: React.FC<{ isSearchBar?: React.ReactNode }> = ({
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  //  const {user} = useAppSelector((state) => state.user);
+  // const userData = useAppSelector((state: any) => state.user);
 
-  //  console.log("user info", user);
+  // console.log("user info", userData);
 
   return (
     <header className="bg-indigo-100">
@@ -65,14 +59,13 @@ const Navbar: React.FC<{ isSearchBar?: React.ReactNode }> = ({
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
-          <a href="#" className="-m-1.5 p-1.5">
-            <span className="sr-only">Your Company</span>
-            <img
-              className="h-8 w-auto"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-              alt=""
-            />
-          </a>
+          <Link href="/" className="-m-1.5 p-1.5 text-gray-800 font-bold">
+            Rental
+            <span className="pl-1 text-mono text-indigo-600 font-medium">
+              {" "}
+              Housing
+            </span>
+          </Link>
 
           {/* search bar */}
           {isSearchBar ? (

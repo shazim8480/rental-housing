@@ -1,10 +1,12 @@
-import rootReducer from "./rootReducer";
+"use client";
+// import rootReducer from "./rootReducer";
+import userReducer from "./feature/users/userSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import { api } from "./api/apiSlice";
 
 const store = configureStore({
   reducer: {
-    root: rootReducer,
+    user: userReducer,
     [api.reducerPath]: api.reducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -12,6 +14,7 @@ const store = configureStore({
 });
 
 export type RootState = ReturnType<typeof store.getState>;
+
 export type AppDispatch = typeof store.dispatch;
 
 export default store;

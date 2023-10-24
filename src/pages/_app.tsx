@@ -4,6 +4,9 @@ import type { NextPage } from "next";
 import type { AppProps } from "next/app";
 import Providers from "@/lib/Providers";
 
+// import { Provider } from "react-redux";
+// import store from "@/redux/store";
+
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
 };

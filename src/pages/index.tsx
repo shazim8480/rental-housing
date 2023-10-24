@@ -1,3 +1,4 @@
+"use client";
 import { ReactElement } from "react";
 import type { NextPageWithLayout } from "./_app";
 // layout

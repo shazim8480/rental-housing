@@ -1,15 +1,10 @@
+"use client";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // Define types
-interface User {
-  // Define the structure of your user data
-  id: string;
-  username: string;
-  // ... other user data
-}
 
 interface UserState {
-  user: User | null;
+  user: any;
   isAuthenticated: boolean;
   loading: boolean;
   error: string | null;
@@ -29,7 +24,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     // Action to set user data in the store
-    setUser: (state, action: PayloadAction<User>) => {
+    setUser: (state, action: PayloadAction) => {
       state.user = action.payload;
       state.isAuthenticated = true;
       state.loading = false;
