@@ -5,22 +5,22 @@ import { propertyData } from "@/lib/propertyData";
 import moment from "moment";
 import { IProperty } from "@/types/globals";
 import { useRegisterUserMutation } from "@/redux/feature/registered-users/registered-users-api";
+import Modal from "./shared/Modal";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type RegisterFormProps = React.HTMLAttributes<HTMLDivElement> & {
   propertyDetails: any;
 };
 
-interface RegisterFormPropsInputs {}
-
 // const ApplyPropertyForm: React.FC = ({ propertyDetails }: any) => {
 const ApplyPropertyForm: React.FC<RegisterFormProps> = (
   props: RegisterFormProps
 ) => {
-  const {
-    register,
-    formState: { errors },
-  } = useForm<RegisterFormPropsInputs>();
   const [selectedDate, setSelectedDate] = useState<string>("");
+
+  const [modalVisible, setModalVisible] = useState(false);
 
   // console.log(selectedDate);
 
@@ -51,6 +51,24 @@ const ApplyPropertyForm: React.FC<RegisterFormProps> = (
     status: "pending",
   });
 
+  const initialFormData = {
+    propertyName: title,
+    ownerName: contact?.name,
+    ownerEmail: contact?.email,
+    location: `${location?.streetAddress}, ${location?.district}, ${location?.division}, ${location?.zipCode}`,
+    selectedUnit: selectedUnit,
+    registrationDate: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    country: "",
+    city: "",
+    division: "",
+    streetAddress: "",
+    postalCode: "",
+    status: "pending",
+  };
+
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
     setFormData((prevData: any) => ({ ...prevData, [name]: value }));
@@ -74,28 +92,64 @@ const ApplyPropertyForm: React.FC<RegisterFormProps> = (
     // Exclude a specific input value (e.g., email) from the formData
     const { location, ...formDataWithoutLocation } = formData;
     console.log(formDataWithoutLocation);
-    registerUser(formData);
   };
 
-  // useEffect(() => {
-  //   const today = moment().format("DD MMM YYYY");
-  //   setSelectedDate(today);
-  // }, []);
-
-  // const today = moment().format("DD MMM YYYY");
+  const registeredSuccessful = () =>
+    toast.success("Registered Successfully!", {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: false,
+      progress: undefined,
+      theme: "colored",
+    });
   return (
     <form onSubmit={handleSubmit}>
-      <div className="space-y-12 px-10">
-        <div className="border-b border-gray-900/10 py-12">
-          <h3 className="text-base lg:text-xl font-semibold leading-7 text-gray-900">
+      <div className="px-10 space-y-12">
+        <ToastContainer
+          position="top-right"
+          autoClose={2500}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
+        {modalVisible && (
+          <Modal
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+            title={"Property Confirmation"}
+            bodyText={"Are you sure you want to register for the property?"}
+            onBtnClick={(e: any) => {
+              if (!selectedUnit) {
+                alert("Please Select a Unit !");
+              } else if (!selectedDate) {
+                alert("Please Select a Registration Date !");
+              } else {
+                registerUser(formData);
+                setFormData(initialFormData);
+                setModalVisible(false);
+                registeredSuccessful();
+              }
+            }}
+          />
+        )}
+        <div className="py-12 border-b border-gray-900/10">
+          <h3 className="text-base font-semibold leading-7 text-gray-900 lg:text-xl">
             Property Information
           </h3>
-          <p className="mt-1 text-sm leading-6 text-indigo-600 font-medium">
+          <p className="mt-1 text-sm font-medium leading-6 text-indigo-600">
             Please make sure to contact the owner before finalizing the
             registration.
           </p>
 
-          <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+          <div className="grid grid-cols-1 mt-10 gap-x-6 gap-y-8 sm:grid-cols-6">
             {/* Property name */}
             <div className="col-span-3">
               <label
@@ -137,7 +191,7 @@ const ApplyPropertyForm: React.FC<RegisterFormProps> = (
               </div>
             </div>
             {/* Owner name */}
-            <div className="md:col-span-3 col-span-3 lg:col-span-2">
+            <div className="col-span-3 md:col-span-3 lg:col-span-2">
               <label
                 htmlFor="tenant"
                 className="block text-sm font-medium leading-6 text-gray-900"
@@ -158,7 +212,7 @@ const ApplyPropertyForm: React.FC<RegisterFormProps> = (
             </div>
 
             {/* select unit */}
-            <div className="md:col-span-3 col-span-3 lg:col-span-1">
+            <div className="col-span-3 md:col-span-3 lg:col-span-1">
               <label
                 htmlFor="selectedUnit"
                 className="block mb-2 text-sm font-medium leading-6 text-red-600"
@@ -189,7 +243,7 @@ const ApplyPropertyForm: React.FC<RegisterFormProps> = (
             </div>
 
             {/* Unit size */}
-            <div className="md:col-span-3 col-span-3 lg:col-span-1">
+            <div className="col-span-3 md:col-span-3 lg:col-span-1">
               <label
                 htmlFor="size"
                 className="block text-sm font-medium leading-6 text-gray-900"
@@ -209,7 +263,7 @@ const ApplyPropertyForm: React.FC<RegisterFormProps> = (
               </div>
             </div>
             {/* Reg date */}
-            <div className="md:col-span-3 col-span-3 lg:col-span-1">
+            <div className="col-span-3 md:col-span-3 lg:col-span-1">
               <label
                 htmlFor="registrationDate"
                 className="block text-sm font-medium leading-6 text-gray-900"
@@ -232,17 +286,17 @@ const ApplyPropertyForm: React.FC<RegisterFormProps> = (
           </div>
         </div>
 
-        <div className="border-b border-gray-900/10 pb-12">
-          <h2 className="text-base lg:text-xl font-semibold leading-7 text-gray-900">
+        <div className="pb-12 border-b border-gray-900/10">
+          <h2 className="text-base font-semibold leading-7 text-gray-900 lg:text-xl">
             Personal Information
           </h2>
-          <p className="mt-3 text-sm leading-6 font-medium text-red-500">
+          <p className="mt-3 text-sm font-medium leading-6 text-red-500">
             Please fill up the information correctly, Any misleading or
             incorrect information might cause disqualification from all the
             services
           </p>
-
-          <div className="mt-10 grid  gap-x-6 gap-y-8 grid-cols-6">
+          {/* personal info  */}
+          <div className="grid grid-cols-6 mt-10 gap-x-6 gap-y-8">
             {/* First name */}
             <div className="col-span-3">
               <label
@@ -287,7 +341,7 @@ const ApplyPropertyForm: React.FC<RegisterFormProps> = (
             </div>
 
             {/* email address */}
-            <div className="md:col-span-3 col-span-3 lg:col-span-2">
+            <div className="col-span-3 md:col-span-3 lg:col-span-2">
               <label
                 htmlFor="email"
                 className="block text-sm font-medium leading-6 text-gray-900"
@@ -309,7 +363,7 @@ const ApplyPropertyForm: React.FC<RegisterFormProps> = (
             </div>
 
             {/* country */}
-            <div className="mt-2 md:col-span-3 col-span-3 lg:col-span-1">
+            <div className="col-span-3 mt-2 md:col-span-3 lg:col-span-1">
               <label
                 htmlFor="country"
                 className="block text-sm font-medium leading-6 text-gray-900"
@@ -335,7 +389,7 @@ const ApplyPropertyForm: React.FC<RegisterFormProps> = (
             </div>
 
             {/* city */}
-            <div className="md:col-span-3 col-span-3 lg:col-span-1">
+            <div className="col-span-3 md:col-span-3 lg:col-span-1">
               <label
                 htmlFor="city"
                 className="block text-sm font-medium leading-6 text-gray-900"
@@ -357,7 +411,7 @@ const ApplyPropertyForm: React.FC<RegisterFormProps> = (
             </div>
 
             {/* division */}
-            <div className="md:col-span-3 col-span-3 lg:col-span-1">
+            <div className="col-span-3 md:col-span-3 lg:col-span-1">
               <label
                 htmlFor="division"
                 className="block text-sm font-medium leading-6 text-gray-900"
@@ -379,7 +433,7 @@ const ApplyPropertyForm: React.FC<RegisterFormProps> = (
             </div>
 
             {/* postal code */}
-            <div className="md:col-span-3 col-span-3 lg:col-span-1">
+            <div className="col-span-3 md:col-span-3 lg:col-span-1">
               <label
                 htmlFor="postalCode"
                 className="block text-sm font-medium leading-6 text-gray-900"
@@ -434,16 +488,16 @@ const ApplyPropertyForm: React.FC<RegisterFormProps> = (
             >
               Upload NID Photo
             </label>
-            <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+            <div className="flex justify-center px-6 py-10 mt-2 border border-dashed rounded-lg border-gray-900/25">
               <div className="text-center">
                 <PhotoIcon
-                  className="mx-auto h-12 w-12 text-gray-300"
+                  className="w-12 h-12 mx-auto text-gray-300"
                   aria-hidden="true"
                 />
-                <div className="mt-4 flex text-sm leading-6 text-gray-600">
+                <div className="flex mt-4 text-sm leading-6 text-gray-600">
                   <label
                     htmlFor="file-upload"
-                    className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+                    className="relative font-semibold text-indigo-600 bg-white rounded-md cursor-pointer focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
                   >
                     <span>Upload Photo</span>
                     <input
@@ -465,20 +519,20 @@ const ApplyPropertyForm: React.FC<RegisterFormProps> = (
           <div>
             <label
               htmlFor="passport-photo"
-              className="block text-sm font-medium leading-6 text-gray-900 mt-6 lg:mt-0"
+              className="block mt-6 text-sm font-medium leading-6 text-gray-900 lg:mt-0"
             >
               Upload Passport Sized Photo
             </label>
-            <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+            <div className="flex justify-center px-6 py-10 mt-2 border border-dashed rounded-lg border-gray-900/25">
               <div className="text-center">
                 <PhotoIcon
-                  className="mx-auto h-12 w-12 text-gray-300"
+                  className="w-12 h-12 mx-auto text-gray-300"
                   aria-hidden="true"
                 />
-                <div className="mt-4 flex text-sm leading-6 text-gray-600">
+                <div className="flex mt-4 text-sm leading-6 text-gray-600">
                   <label
                     htmlFor="file-upload"
-                    className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+                    className="relative font-semibold text-indigo-600 bg-white rounded-md cursor-pointer focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
                   >
                     <span>Upload Photo</span>
                     <input
@@ -499,16 +553,11 @@ const ApplyPropertyForm: React.FC<RegisterFormProps> = (
         </div>
       </div>
 
-      <div className="mt-6 flex items-center justify-end gap-x-6 mr-10">
+      <div className="flex items-center justify-end mt-6 mr-10 gap-x-6">
         <button
-          type="button"
-          className="px-7 rounded-md py-2 text-md bg-red-50 font-semibold leading-6 text-red-700"
-        >
-          Cancel
-        </button>
-        <button
-          type="submit"
-          className="rounded-md bg-indigo-600 px-7 py-2 text-md font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          // type="submit"
+          onClick={() => setModalVisible(true)}
+          className="py-2 font-semibold text-white bg-indigo-600 rounded-md shadow-sm px-7 text-md hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
           Save
         </button>
