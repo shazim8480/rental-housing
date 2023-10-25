@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
-import { propertyData } from "@/lib/propertyData";
-import moment from "moment";
-import { IProperty } from "@/types/globals";
+import { PhotoIcon } from "@heroicons/react/24/solid";
+import { toast } from "react-toastify";
+// query
 import { useRegisterUserMutation } from "@/redux/feature/registered-users/registered-users-api";
+// components
 import Modal from "./shared/Modal";
-
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import Toast, { toastStyleProperties } from "./shared/Toast";
 
 type RegisterFormProps = React.HTMLAttributes<HTMLDivElement> & {
   propertyDetails: any;
@@ -21,6 +18,7 @@ const ApplyPropertyForm: React.FC<RegisterFormProps> = (
   const [selectedDate, setSelectedDate] = useState<string>("");
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [toastVisible, setToastVisible] = useState(false);
 
   // console.log(selectedDate);
 
@@ -94,32 +92,14 @@ const ApplyPropertyForm: React.FC<RegisterFormProps> = (
     console.log(formDataWithoutLocation);
   };
 
-  const registeredSuccessful = () =>
-    toast.success("Registered Successfully!", {
-      position: "top-right",
-      autoClose: 2500,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: false,
-      progress: undefined,
-      theme: "colored",
-    });
+  // toast trigger
+  const registrationSuccessfulToast = () =>
+    toast.success(`Registration Successful`, toastStyleProperties);
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="px-10 space-y-12">
-        <ToastContainer
-          position="top-right"
-          autoClose={2500}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="colored"
-        />
+        <Toast />
         {modalVisible && (
           <Modal
             modalVisible={modalVisible}
@@ -132,10 +112,11 @@ const ApplyPropertyForm: React.FC<RegisterFormProps> = (
               } else if (!selectedDate) {
                 alert("Please Select a Registration Date !");
               } else {
-                registerUser(formData);
-                setFormData(initialFormData);
+                // registerUser(formData);
+                // setFormData(initialFormData);
                 setModalVisible(false);
-                registeredSuccessful();
+                registrationSuccessfulToast();
+                // router.push("/dashboard")
               }
             }}
           />

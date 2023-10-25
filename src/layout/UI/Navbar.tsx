@@ -55,13 +55,13 @@ const Navbar: React.FC<{ isSearchBar?: React.ReactNode }> = ({
   return (
     <header className="bg-indigo-100">
       <nav
-        className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
+        className="flex items-center justify-between p-6 mx-auto max-w-7xl lg:px-8"
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
           <Link href="/" className="-m-1.5 p-1.5 text-gray-800 font-bold">
             Rental
-            <span className="pl-1 text-mono text-indigo-600 font-medium">
+            <span className="pl-1 font-medium text-indigo-600 text-mono">
               {" "}
               Housing
             </span>
@@ -71,14 +71,14 @@ const Navbar: React.FC<{ isSearchBar?: React.ReactNode }> = ({
           {isSearchBar ? (
             <div className="hidden mx-auto text-gray-600 lg:flex lg:justify-start lg:items-center">
               <input
-                className="border-1 w-72 border-gray-300 bg-white h-10 px-5  rounded-lg text-sm focus:outline-none"
+                className="h-10 px-5 text-sm bg-white border-gray-300 rounded-lg border-1 w-72 focus:outline-none"
                 type="search"
                 name="search"
                 placeholder="Enter Location or Property Name"
               />
               <button
                 type="submit"
-                className="ml-4 bg-indigo-600 py-2 px-3 rounded-lg"
+                className="px-3 py-2 ml-4 bg-indigo-600 rounded-lg"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -106,32 +106,32 @@ const Navbar: React.FC<{ isSearchBar?: React.ReactNode }> = ({
             onClick={() => setMobileMenuOpen(true)}
           >
             <span className="sr-only">Open main menu</span>
-            <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+            <Bars3Icon className="w-6 h-6" aria-hidden="true" />
           </button>
         </div>
 
         <div className="hidden lg:flex lg:flex-1 lg:justify-center lg:items-center">
           <Link
             href="/about-us"
-            className="text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100 py-1 px-4 rounded"
+            className="px-4 py-1 text-sm font-semibold leading-6 text-gray-900 rounded hover:bg-gray-100"
           >
             About Us
           </Link>
           <Link
             href="/property-listings"
-            className="text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100 py-1 px-4 rounded"
+            className="px-4 py-1 text-sm font-semibold leading-6 text-gray-900 rounded hover:bg-gray-100"
           >
             Property Listings
           </Link>
           <Link
             href="/seller"
-            className="text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100 py-1 px-4 rounded"
+            className="px-4 py-1 text-sm font-semibold leading-6 text-gray-900 rounded hover:bg-gray-100"
           >
             List Your Property
           </Link>
         </div>
 
-        <button className="hidden lg:block bg-indigo-600 hover:bg-indigo-800 text-sm font-semibold leading-6 text-center text-indigo-50 mr-8 py-1 px-4 rounded">
+        <button className="hidden px-4 py-1 mr-8 text-sm font-semibold leading-6 text-center bg-indigo-600 rounded lg:block hover:bg-indigo-800 text-indigo-50">
           <Link href="/login">
             Log in <span aria-hidden="true">&rarr;</span>
           </Link>
@@ -139,10 +139,10 @@ const Navbar: React.FC<{ isSearchBar?: React.ReactNode }> = ({
         {/* profile popover */}
         <Popover.Group className="hidden lg:flex lg:gap-x-2 lg:mr-12">
           <Popover className="relative">
-            <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
+            <Popover.Button className="flex items-center text-sm font-semibold leading-6 text-gray-900 gap-x-1">
               Hi, Adnan
               <ChevronDownIcon
-                className="h-5 w-5 flex-none text-gray-400"
+                className="flex-none w-5 h-5 text-gray-400"
                 aria-hidden="true"
               />
             </Popover.Button>
@@ -156,12 +156,12 @@ const Navbar: React.FC<{ isSearchBar?: React.ReactNode }> = ({
               leaveFrom="opacity-100 translate-y-0"
               leaveTo="opacity-0 translate-y-1"
             >
-              <Popover.Panel className="absolute -right-8 top-full z-10 mt-3 w-screen max-w-xs overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
+              <Popover.Panel className="absolute z-10 w-screen max-w-xs mt-3 overflow-hidden bg-white shadow-lg -right-8 top-full rounded-3xl ring-1 ring-gray-900/5">
                 <div className="p-2">
                   {profileOptions.map((item) => (
                     <div
                       key={item.name}
-                      className="group relative flex items-center gap-x-6 rounded-md p-4 text-sm leading-3 hover:bg-gray-50"
+                      className="relative flex items-center p-4 text-sm leading-3 rounded-md group gap-x-6 hover:bg-gray-50"
                     >
                       <div className="flex-auto">
                         <Link
@@ -188,12 +188,12 @@ const Navbar: React.FC<{ isSearchBar?: React.ReactNode }> = ({
         onClose={setMobileMenuOpen}
       >
         <div className="fixed inset-0 z-10" />
-        <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+        <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full px-6 py-6 overflow-y-auto bg-white sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
               <img
-                className="h-8 w-auto"
+                className="w-auto h-8"
                 src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                 alt=""
               />
@@ -204,12 +204,12 @@ const Navbar: React.FC<{ isSearchBar?: React.ReactNode }> = ({
               onClick={() => setMobileMenuOpen(false)}
             >
               <span className="sr-only">Close menu</span>
-              <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+              <XMarkIcon className="w-6 h-6" aria-hidden="true" />
             </button>
           </div>
-          <div className="mt-6 flow-root">
+          <div className="flow-root mt-6">
             <div className="-my-6 divide-y divide-gray-500/10">
-              <div className="space-y-2 py-6">
+              <div className="py-6 space-y-2">
                 <Disclosure as="div" className="-mx-3">
                   {({ open }) => (
                     <>
@@ -228,7 +228,7 @@ const Navbar: React.FC<{ isSearchBar?: React.ReactNode }> = ({
                             key={item.name}
                             as="a"
                             href={item.href}
-                            className="block bg-indigo-600 text-indigo-50 rounded-md py-2 pl-6 pr-3 text-sm font-semibold leading-7"
+                            className="block py-2 pl-6 pr-3 text-sm font-semibold leading-7 bg-indigo-600 rounded-md text-indigo-50"
                           >
                             {item.name}
                           </Disclosure.Button>
@@ -239,19 +239,19 @@ const Navbar: React.FC<{ isSearchBar?: React.ReactNode }> = ({
                 </Disclosure>
                 <a
                   href="#"
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                  className="block px-3 py-2 -mx-3 text-base font-semibold leading-7 text-gray-900 rounded-lg hover:bg-gray-50"
                 >
                   Features
                 </a>
                 <a
                   href="#"
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                  className="block px-3 py-2 -mx-3 text-base font-semibold leading-7 text-gray-900 rounded-lg hover:bg-gray-50"
                 >
                   Marketplace
                 </a>
                 <a
                   href="#"
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                  className="block px-3 py-2 -mx-3 text-base font-semibold leading-7 text-gray-900 rounded-lg hover:bg-gray-50"
                 >
                   Company
                 </a>
