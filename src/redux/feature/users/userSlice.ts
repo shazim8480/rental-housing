@@ -31,7 +31,7 @@ const userSlice = createSlice({
       state.error = null;
     },
     // Action to clear user data from the store (on logout or error)
-    clearUser: (state) => {
+    logOutUser: (state) => {
       state.user = null;
       state.isAuthenticated = false;
       state.loading = false;
@@ -50,7 +50,7 @@ const userSlice = createSlice({
 });
 
 // Export actions
-export const { setUser, clearUser, setLoading, setError } = userSlice.actions;
+export const { setUser, logOutUser, setLoading, setError } = userSlice.actions;
 
 // Export reducer
 export default userSlice.reducer;

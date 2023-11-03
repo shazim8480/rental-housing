@@ -4,11 +4,13 @@ import Link from "next/link";
 // import DropdownNotification from "./DropdownNotification";
 import DropdownUser from "./DropdownUser";
 import Image from "next/image";
+// import { useAppSelector } from "@/redux/hooks";
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
 }) => {
+  // const user = useAppSelector((state: any) => state.user);
   return (
     <header className="sticky top-0 z-999 flex w-full bg-white shadow-md ">
       <div className="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">

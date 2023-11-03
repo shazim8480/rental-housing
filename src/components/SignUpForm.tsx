@@ -26,17 +26,13 @@ const SignUpForm: React.FC = () => {
     e.preventDefault();
     console.log(formData);
     let response: any = await signUp(formData);
-    dispatch(setUser(response));
-    console.log(response);
-    router.push("/");
-
-    // if (response?.status === 200) {
-    //   console.log("success");
-    // } else if (response.error?.status === 400) {
-    //   alert(response?.error?.data?.error);
-    // } else {
-    //   alert("Please try again!");
-    // }
+    if (response?.error?.data?.status === false) {
+      alert(response?.error?.data?.error);
+    } else {
+      dispatch(setUser(response));
+      console.log("sign up success response ::", response);
+      router.push("/");
+    }
   };
 
   return (

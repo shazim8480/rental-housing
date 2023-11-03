@@ -27,9 +27,12 @@ const LoginForm: React.FC = () => {
     let response: any = await login(formData);
     if (response?.error?.data?.status === false) {
       alert(response?.error?.data?.error);
+    } else {
+      console.log("login response", response);
+      dispatch(setUser(response));
+      router.push("/");
     }
-    // dispatch(setUser(response));
-    console.log("login response", response);
+
     // router.push("/");
 
     // if (response?.status === 200) {

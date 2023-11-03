@@ -143,7 +143,7 @@ const Navbar: React.FC<{ isSearchBar?: React.ReactNode }> = ({
           <Popover.Group className="hidden lg:flex lg:gap-x-2 lg:mr-12">
             <Popover className="relative">
               <Popover.Button className="flex items-center text-sm font-semibold leading-6 text-gray-900 gap-x-1">
-                Hi, Adnan
+                Hi, {user?.user?.data?.name}
                 <ChevronDownIcon
                   className="flex-none w-5 h-5 text-gray-400"
                   aria-hidden="true"

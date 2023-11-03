@@ -1,5 +1,5 @@
-// export const PROTOCOL_HOST = "http://localhost:8000/api";
-export const PROTOCOL_HOST = "http://localhost:8000/api";
+// export const PROTOCOL_HOST = "https://rental-housing-server.onrender.com/api";
+export const PROTOCOL_HOST = "https://rental-housing-server.onrender.com/api";
 
 export const GET_ALL_PROPERTIES_URL = "/properties";
 
