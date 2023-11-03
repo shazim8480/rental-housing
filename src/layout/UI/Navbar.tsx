@@ -48,9 +48,9 @@ const Navbar: React.FC<{ isSearchBar?: React.ReactNode }> = ({
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // const userData = useAppSelector((state: any) => state.user);
+  const user = useAppSelector((state: any) => state.user);
 
-  // console.log("user info", userData);
+  console.log("user info from navbar", user);
 
   return (
     <header className="bg-indigo-100">
@@ -131,54 +131,58 @@ const Navbar: React.FC<{ isSearchBar?: React.ReactNode }> = ({
           </Link>
         </div>
 
-        <button className="hidden px-4 py-1 mr-8 text-sm font-semibold leading-6 text-center bg-indigo-600 rounded lg:block hover:bg-indigo-800 text-indigo-50">
-          <Link href="/login">
-            Log in <span aria-hidden="true">&rarr;</span>
-          </Link>
-        </button>
+        {user?.isAuthenticated === false && (
+          <button className="hidden px-4 py-1 mr-8 text-sm font-semibold leading-6 text-center bg-indigo-600 rounded lg:block hover:bg-indigo-800 text-indigo-50">
+            <Link href="/login">
+              Log in <span aria-hidden="true">&rarr;</span>
+            </Link>
+          </button>
+        )}
         {/* profile popover */}
-        <Popover.Group className="hidden lg:flex lg:gap-x-2 lg:mr-12">
-          <Popover className="relative">
-            <Popover.Button className="flex items-center text-sm font-semibold leading-6 text-gray-900 gap-x-1">
-              Hi, Adnan
-              <ChevronDownIcon
-                className="flex-none w-5 h-5 text-gray-400"
-                aria-hidden="true"
-              />
-            </Popover.Button>
+        {user?.isAuthenticated === true && (
+          <Popover.Group className="hidden lg:flex lg:gap-x-2 lg:mr-12">
+            <Popover className="relative">
+              <Popover.Button className="flex items-center text-sm font-semibold leading-6 text-gray-900 gap-x-1">
+                Hi, Adnan
+                <ChevronDownIcon
+                  className="flex-none w-5 h-5 text-gray-400"
+                  aria-hidden="true"
+                />
+              </Popover.Button>
 
-            <Transition
-              as={Fragment}
-              enter="transition ease-out duration-200"
-              enterFrom="opacity-0 translate-y-1"
-              enterTo="opacity-100 translate-y-0"
-              leave="transition ease-in duration-150"
-              leaveFrom="opacity-100 translate-y-0"
-              leaveTo="opacity-0 translate-y-1"
-            >
-              <Popover.Panel className="absolute z-10 w-screen max-w-xs mt-3 overflow-hidden bg-white shadow-lg -right-8 top-full rounded-3xl ring-1 ring-gray-900/5">
-                <div className="p-2">
-                  {profileOptions.map((item) => (
-                    <div
-                      key={item.name}
-                      className="relative flex items-center p-4 text-sm leading-3 rounded-md group gap-x-6 hover:bg-gray-50"
-                    >
-                      <div className="flex-auto">
-                        <Link
-                          href={item.href}
-                          className="block font-semibold text-gray-900"
-                        >
-                          {item.name}
-                          <span className="absolute inset-0" />
-                        </Link>
+              <Transition
+                as={Fragment}
+                enter="transition ease-out duration-200"
+                enterFrom="opacity-0 translate-y-1"
+                enterTo="opacity-100 translate-y-0"
+                leave="transition ease-in duration-150"
+                leaveFrom="opacity-100 translate-y-0"
+                leaveTo="opacity-0 translate-y-1"
+              >
+                <Popover.Panel className="absolute z-10 w-screen max-w-xs mt-3 overflow-hidden bg-white shadow-lg -right-8 top-full rounded-3xl ring-1 ring-gray-900/5">
+                  <div className="p-2">
+                    {profileOptions.map((item) => (
+                      <div
+                        key={item.name}
+                        className="relative flex items-center p-4 text-sm leading-3 rounded-md group gap-x-6 hover:bg-gray-50"
+                      >
+                        <div className="flex-auto">
+                          <Link
+                            href={item.href}
+                            className="block font-semibold text-gray-900"
+                          >
+                            {item.name}
+                            <span className="absolute inset-0" />
+                          </Link>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </Popover.Panel>
-            </Transition>
-          </Popover>
-        </Popover.Group>
+                    ))}
+                  </div>
+                </Popover.Panel>
+              </Transition>
+            </Popover>
+          </Popover.Group>
+        )}
       </nav>
       {/* mobile menu */}
       <Dialog

@@ -1,7 +1,46 @@
+import { useLoginMutation } from "@/redux/feature/auth/auth-api";
+import { setUser } from "@/redux/feature/users/userSlice";
+import { useAppDispatch } from "@/redux/hooks";
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
 
 const LoginForm: React.FC = () => {
+  const [login] = useLoginMutation();
+  const router = useRouter();
+
+  const dispatch = useAppDispatch();
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData((prevData: any) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    console.log(formData);
+    let response: any = await login(formData);
+    if (response?.error?.data?.status === false) {
+      alert(response?.error?.data?.error);
+    }
+    // dispatch(setUser(response));
+    console.log("login response", response);
+    // router.push("/");
+
+    // if (response?.status === 200) {
+    //   console.log("success");
+    // } else if (response.error?.status === 400) {
+    //   alert(response?.error?.data?.error);
+    // } else {
+    //   alert("Please try again!");
+    // }
+  };
+
   return (
     <div className="flex min-h-full w-full flex-col justify-center px-6 py-12 lg:px-8">
       <div className="mx-auto w-full max-w-sm lg:max-w-xl">
@@ -16,7 +55,12 @@ const LoginForm: React.FC = () => {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6" action="#" method="POST">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-6"
+          action="#"
+          method="POST"
+        >
           <div>
             <label
               htmlFor="email"
@@ -32,6 +76,8 @@ const LoginForm: React.FC = () => {
                 autoComplete="email"
                 required
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                value={formData.email}
+                onChange={handleInputChange}
               />
             </div>
           </div>
@@ -61,6 +107,8 @@ const LoginForm: React.FC = () => {
                 autoComplete="current-password"
                 required
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                value={formData.password}
+                onChange={handleInputChange}
               />
             </div>
           </div>
