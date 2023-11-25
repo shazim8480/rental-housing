@@ -1,28 +1,82 @@
 import { NextPageWithLayout } from "@/pages/_app";
 import Image from "next/image";
-import { ReactElement } from "react";
+import { ReactElement, useState } from "react";
+import { toast } from "react-toastify";
 
 // components
 import Breadcrumb from "@/components/dashboard/Breadcrumb/Breadcrumb";
 // layouts
 import DashboardLayout from "@/layout/dashboard/DashboardLayout";
+import { useAppSelector } from "@/redux/hooks";
+import Toast, { toastStyleProperties } from "@/components/shared/Toast";
+import Modal from "@/components/shared/Modal";
 
 const ProfilePage: NextPageWithLayout = ({}) => {
+  const user = useAppSelector((state: any) => state.user);
+
+  // const { name, email } = user?.user?.data;
+  const [modalVisible, setModalVisible] = useState(false);
+
+  console.log("profile user", user);
+
+  // update information
+  const [formData, setFormData] = useState({
+    name: user?.user?.data?.name ? user?.user?.data?.name : "",
+    mobile: user?.user?.data?.mobile ? user?.user?.data?.mobile : "",
+    email: user?.user?.data?.email,
+    bio: user?.user?.data?.bio ? user?.user?.data?.bio : "",
+  });
+
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData((prevData: any) => ({ ...prevData, [name]: value }));
+  };
+
+  // toast trigger
+  const profileUpdateSuccessfulToast = () =>
+    toast.success(`Profile Updated Successfully`, toastStyleProperties);
+
+  // submit user profile update data
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    console.log(formData);
+  };
+
   return (
     <>
       <div className="mx-auto max-w-270">
         <Breadcrumb pageName="Profile" />
-
+        <Toast />
+        {modalVisible && (
+          <Modal
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+            title={"Update Confirmation"}
+            bodyText={"Are you sure you want to update your profile?"}
+            onBtnClick={(e: any) => {
+              if (!formData?.mobile) {
+                alert("Please enter your mobile number!");
+              } else {
+                // registerUser(formData);
+                // setFormData(initialFormData);
+                setModalVisible(false);
+                profileUpdateSuccessfulToast();
+                // router.push("/dashboard")
+              }
+            }}
+          />
+        )}
         <div className="grid grid-cols-5 gap-8 ">
           <div className="col-span-5 xl:col-span-3 bg-indigo-50">
-            <div className="rounded-sm border border-stroke  shadow-default">
-              <div className="border-b border-stroke py-4 px-7 ">
+            <div className="rounded-sm border border-gray-200  shadow-default">
+              <div className="border-b  py-4 px-7 ">
                 <h3 className="font-medium text-gray-700 dark:text-white">
                   Personal Information
                 </h3>
               </div>
               <div className="p-7">
-                <form action="#">
+                <form onSubmit={handleSubmit}>
+                  {/* Full name */}
                   <div className="mb-5 flex flex-col gap-5 sm:flex-row">
                     <div className="w-full sm:w-1/2">
                       <label
@@ -58,12 +112,12 @@ const ProfilePage: NextPageWithLayout = ({}) => {
                           </svg>
                         </span>
                         <input
-                          className="w-full rounded border border-stroke bg-gray-100 py-3 pl-11 pr-5 text-gray-500 focus:border-indigo-600 focus-visible:outline-none  dark:bg-meta-4 dark:text-white dark:focus:border-indigo-600"
+                          className="w-full rounded border border-indigo-400 bg-gray-100 py-3 pl-11 pr-5 text-gray-700 focus:border-indigo-600 focus-visible:outline-none  dark:bg-meta-4 dark:text-white dark:focus:border-indigo-600"
                           type="text"
                           name="fullName"
                           id="fullName"
-                          placeholder="Devid Jhon"
-                          defaultValue="Devid Jhon"
+                          value={formData.name}
+                          onChange={handleInputChange}
                         />
                       </div>
                     </div>
@@ -71,17 +125,18 @@ const ProfilePage: NextPageWithLayout = ({}) => {
                     <div className="w-full sm:w-1/2">
                       <label
                         className="mb-3 block text-sm font-medium text-gray-600 dark:text-white"
-                        htmlFor="phoneNumber"
+                        htmlFor="mobile"
                       >
                         Phone Number
                       </label>
                       <input
-                        className="w-full rounded border border-stroke bg-gray-100 py-3 px-5 text-gray-500 focus:border-indigo-600 focus-visible:outline-none  dark:bg-meta-4 dark:text-white dark:focus:border-indigo-600"
+                        className="w-full rounded border border-indigo-400 bg-gray-100 py-3 px-5 text-gray-700 focus:border-indigo-600 focus-visible:outline-none  dark:bg-meta-4 dark:text-white dark:focus:border-indigo-600"
                         type="text"
-                        name="phoneNumber"
-                        id="phoneNumber"
-                        placeholder="+990 3343 7865"
-                        defaultValue="+990 3343 7865"
+                        name="mobile"
+                        id="mobile"
+                        placeholder="Enter Mobile Number"
+                        value={formData.mobile}
+                        onChange={handleInputChange}
                       />
                     </div>
                   </div>
@@ -120,17 +175,17 @@ const ProfilePage: NextPageWithLayout = ({}) => {
                         </svg>
                       </span>
                       <input
-                        className="w-full rounded border border-stroke bg-gray-100 py-3 pl-11 pr-5 text-gray-500 focus:border-indigo-600 focus-visible:outline-none  dark:bg-meta-4 dark:text-white dark:focus:border-indigo-600"
+                        className="w-full rounded border border-gray-100 bg-gray-200 py-3 pl-11 pr-5 text-gray-500 focus:border-indigo-600 focus-visible:outline-none  dark:bg-meta-4 dark:text-white dark:focus:border-indigo-600"
                         type="email"
                         name="emailAddress"
                         id="emailAddress"
-                        placeholder="devidjond45@gmail.com"
-                        defaultValue="devidjond45@gmail.com"
+                        defaultValue={user?.user?.data?.email}
+                        disabled={true}
                       />
                     </div>
                   </div>
 
-                  <div className="mb-5">
+                  {/* <div className="mb-5">
                     <label
                       className="mb-3 block text-sm font-medium text-gray-600 dark:text-white"
                       htmlFor="Username"
@@ -138,21 +193,21 @@ const ProfilePage: NextPageWithLayout = ({}) => {
                       Username
                     </label>
                     <input
-                      className="w-full rounded border border-stroke bg-gray-100 py-3 px-5 text-gray-500 focus:border-indigo-600 focus-visible:outline-none  dark:bg-meta-4 dark:text-white dark:focus:border-indigo-600"
+                      className="w-full rounded border border-indigo-400 bg-gray-100 py-3 px-5 text-gray-700 focus:border-indigo-600 focus-visible:outline-none  dark:bg-meta-4 dark:text-white dark:focus:border-indigo-600"
                       type="text"
                       name="Username"
                       id="Username"
                       placeholder="devidjhon24"
                       defaultValue="devidjhon24"
                     />
-                  </div>
+                  </div> */}
 
                   <div className="mb-5">
                     <label
                       className="mb-3 block text-sm font-medium text-gray-600 dark:text-white"
                       htmlFor="Username"
                     >
-                      BIO
+                      User Bio
                     </label>
                     <div className="relative">
                       <span className="absolute left-4 top-4">
@@ -187,26 +242,24 @@ const ProfilePage: NextPageWithLayout = ({}) => {
                       </span>
 
                       <textarea
-                        className="w-full rounded border border-stroke bg-gray-100 py-3 pl-11 pr-5 text-gray-500 focus:border-indigo-600 focus-visible:outline-none  dark:bg-meta-4 dark:text-white dark:focus:border-indigo-600"
+                        className="w-full rounded border border-indigo-400 bg-gray-100 py-3 pl-11 pr-5 text-gray-700 focus:border-indigo-600 focus-visible:outline-none  dark:bg-meta-4 dark:text-white dark:focus:border-indigo-600"
                         name="bio"
                         id="bio"
                         rows={6}
-                        placeholder="Write your bio here"
-                        defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque posuere fermentum urna, eu condimentum mauris tempus ut. Donec fermentum blandit aliquet."
+                        placeholder="Enter your bio here"
+                        value={formData.bio}
+                        onChange={handleInputChange}
                       ></textarea>
                     </div>
                   </div>
 
                   <div className="flex justify-end gap-5">
-                    <button
-                      className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-gray-700 hover:shadow-sm  dark:text-white"
-                      type="submit"
-                    >
+                    <button className="flex justify-center rounded border border-indigo-400 py-2 px-6 font-medium text-gray-700 hover:shadow-sm  dark:text-white">
                       Cancel
                     </button>
                     <button
                       className="flex justify-center rounded bg-indigo-600 py-2 px-6 font-medium text-gray-100 hover:bg-opacity-95"
-                      type="submit"
+                      onClick={() => setModalVisible(true)}
                     >
                       Save
                     </button>
@@ -216,8 +269,8 @@ const ProfilePage: NextPageWithLayout = ({}) => {
             </div>
           </div>
           <div className="col-span-5 xl:col-span-2">
-            <div className="rounded-sm border border-stroke bg-indigo-50 shadow-default ">
-              <div className="border-b border-stroke py-4 px-7 ">
+            <div className="rounded-sm border border-gray-200 bg-indigo-50 shadow-default ">
+              <div className="border-b  py-4 px-7 ">
                 <h3 className="font-medium text-gray-700 dark:text-white">
                   Your Photo
                 </h3>
@@ -258,7 +311,7 @@ const ProfilePage: NextPageWithLayout = ({}) => {
                       className="absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none"
                     />
                     <div className="flex flex-col items-center justify-center space-y-3">
-                      <span className="flex h-10 w-10 items-center justify-center rounded-full border border-stroke bg-gray-50 ">
+                      <span className="flex h-10 w-10 items-center justify-center rounded-full border border-indigo-400 bg-gray-50 ">
                         <svg
                           width="16"
                           height="16"
@@ -293,21 +346,6 @@ const ProfilePage: NextPageWithLayout = ({}) => {
                       <p className="mt-1.5">SVG, PNG, JPG or GIF</p>
                       <p>(max, 800 X 800px)</p>
                     </div>
-                  </div>
-
-                  <div className="flex justify-end gap-5 mt-5">
-                    <button
-                      className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-gray-700 hover:shadow-sm  dark:text-white"
-                      type="submit"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="flex justify-center rounded bg-indigo-600 py-2 px-6 font-medium text-gray-100 hover:bg-opacity-95"
-                      type="submit"
-                    >
-                      Save
-                    </button>
                   </div>
                 </form>
               </div>

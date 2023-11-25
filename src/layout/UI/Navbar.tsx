@@ -20,16 +20,16 @@ const profileOptions = [
     href: "/dashboard",
     icon: ChartPieIcon,
   },
-  {
-    name: "Profile",
-    description: "Speak directly to your customers",
-    href: "#",
-  },
-  {
-    name: "Privacy Policy",
-    description: "Your customers’ data will be safe and secure",
-    href: "#",
-  },
+  // {
+  //   name: "Profile",
+  //   description: "Speak directly to your customers",
+  //   href: "#",
+  // },
+  // {
+  //   name: "Privacy Policy",
+  //   description: "Your customers’ data will be safe and secure",
+  //   href: "#",
+  // },
   {
     name: "Log out",
     description: "Build strategic funnels that will convert",
@@ -50,7 +50,7 @@ const Navbar: React.FC<{ isSearchBar?: React.ReactNode }> = ({
 
   const user = useAppSelector((state: any) => state.user);
 
-  console.log("user info from navbar", user);
+  // console.log("user info from navbar", user);
 
   return (
     <header className="bg-indigo-100">
@@ -214,60 +214,64 @@ const Navbar: React.FC<{ isSearchBar?: React.ReactNode }> = ({
           <div className="flow-root mt-6">
             <div className="-my-6 divide-y divide-gray-500/10">
               <div className="py-6 space-y-2">
-                <Disclosure as="div" className="-mx-3">
-                  {({ open }) => (
-                    <>
-                      <Disclosure.Button className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                        Hi, Adnan
-                        <ChevronDownIcon
-                          className={classNames(
-                            open ? "rotate-180 h-5 w-5" : "h-5 w-5 flex-none"
-                          )}
-                          aria-hidden="true"
-                        />
-                      </Disclosure.Button>
-                      <Disclosure.Panel className="mt-2 space-y-1">
-                        {...profileOptions.map((item) => (
-                          <Disclosure.Button
-                            key={item.name}
-                            as="a"
-                            href={item.href}
-                            className="block py-2 pl-6 pr-3 text-sm font-semibold leading-7 bg-indigo-600 rounded-md text-indigo-50"
-                          >
-                            {item.name}
-                          </Disclosure.Button>
-                        ))}
-                      </Disclosure.Panel>
-                    </>
-                  )}
-                </Disclosure>
+                {user?.isAuthenticated === true && (
+                  <Disclosure as="div" className="-mx-3">
+                    {({ open }) => (
+                      <>
+                        <Disclosure.Button className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                          Hi, {user?.user?.data?.name}
+                          <ChevronDownIcon
+                            className={classNames(
+                              open ? "rotate-180 h-5 w-5" : "h-5 w-5 flex-none"
+                            )}
+                            aria-hidden="true"
+                          />
+                        </Disclosure.Button>
+                        <Disclosure.Panel className="mt-2 space-y-1">
+                          {...profileOptions.map((item) => (
+                            <Disclosure.Button
+                              key={item.name}
+                              as="a"
+                              href={item.href}
+                              className="block py-2 pl-6 pr-3 text-sm font-semibold leading-7 bg-indigo-600 rounded-md text-indigo-50"
+                            >
+                              {item.name}
+                            </Disclosure.Button>
+                          ))}
+                        </Disclosure.Panel>
+                      </>
+                    )}
+                  </Disclosure>
+                )}
                 <a
-                  href="#"
-                  className="block px-3 py-2 -mx-3 text-base font-semibold leading-7 text-gray-900 rounded-lg hover:bg-gray-50"
+                  href="/about-us"
+                  className="px-4 py-1 text-sm font-semibold leading-6 text-gray-900 rounded hover:bg-gray-100"
                 >
                   Features
                 </a>
                 <a
                   href="#"
-                  className="block px-3 py-2 -mx-3 text-base font-semibold leading-7 text-gray-900 rounded-lg hover:bg-gray-50"
+                  className="px-4 py-1 text-sm font-semibold leading-6 text-gray-900 rounded hover:bg-gray-100"
                 >
-                  Marketplace
+                  Property Listings
                 </a>
-                <a
-                  href="#"
-                  className="block px-3 py-2 -mx-3 text-base font-semibold leading-7 text-gray-900 rounded-lg hover:bg-gray-50"
-                >
-                  Company
-                </a>
-              </div>
-              <div className="py-6">
                 <Link
-                  href="/login"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                  href="/seller"
+                  className="px-4 py-1 text-sm font-semibold leading-6 text-gray-900 rounded hover:bg-gray-100"
                 >
-                  Log in
+                  List Your Property
                 </Link>
               </div>
+              {user?.isAuthenticated === false && (
+                <div className="py-6">
+                  <Link
+                    href="/login"
+                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                  >
+                    Log in
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </Dialog.Panel>

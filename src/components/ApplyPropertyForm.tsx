@@ -6,6 +6,7 @@ import { useRegisterUserMutation } from "@/redux/feature/registered-users/regist
 // components
 import Modal from "./shared/Modal";
 import Toast, { toastStyleProperties } from "./shared/Toast";
+import { useRouter } from "next/router";
 
 type RegisterFormProps = React.HTMLAttributes<HTMLDivElement> & {
   propertyDetails: any;
@@ -15,10 +16,11 @@ type RegisterFormProps = React.HTMLAttributes<HTMLDivElement> & {
 const ApplyPropertyForm: React.FC<RegisterFormProps> = (
   props: RegisterFormProps
 ) => {
+  const router = useRouter();
   const [selectedDate, setSelectedDate] = useState<string>("");
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [toastVisible, setToastVisible] = useState(false);
+  // const [toastVisible, setToastVisible] = useState(false);
 
   // console.log(selectedDate);
 
@@ -106,17 +108,17 @@ const ApplyPropertyForm: React.FC<RegisterFormProps> = (
             setModalVisible={setModalVisible}
             title={"Property Confirmation"}
             bodyText={"Are you sure you want to register for the property?"}
-            onBtnClick={(e: any) => {
+            onBtnClick={async (e: any) => {
               if (!selectedUnit) {
                 alert("Please Select a Unit !");
               } else if (!selectedDate) {
                 alert("Please Select a Registration Date !");
               } else {
-                // registerUser(formData);
-                // setFormData(initialFormData);
+                await registerUser(formData);
+                setFormData(initialFormData);
                 setModalVisible(false);
                 registrationSuccessfulToast();
-                // router.push("/dashboard")
+                router.push("/dashboard");
               }
             }}
           />

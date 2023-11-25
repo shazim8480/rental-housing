@@ -169,7 +169,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       </clipPath>
                     </defs>
                   </svg>
-                  Users
+                  Registered Users
                 </Link>
               </li>
               {/* <!-- Menu Item Users --> */}

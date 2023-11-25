@@ -12,10 +12,10 @@ const RentalCard: React.FC<RentalCardProps> = ({ property }) => {
 
   return (
     <>
-      <div className="max-w-sm w-full py-4 px-3">
+      <div className="max-w-sm w-full py-2 px-3">
         <div className="bg-white shadow-xl rounded-lg overflow-hidden">
           <div
-            className="bg-cover bg-center h-56 p-4"
+            className="bg-cover bg-center h-32 p-4"
             style={{
               backgroundImage: `url(${images[0]?.src})`,
             }}
@@ -27,8 +27,8 @@ const RentalCard: React.FC<RentalCardProps> = ({ property }) => {
                 {additionalDetails?.size}
               </span>
             </p>
-            <p className="text-xl font-mono py-2 text-gray-800">
-              BDT {pricing?.monthly}/month
+            <p className="text-lg py-2 text-gray-800">
+              BDT {pricing?.monthly} / month
             </p>
             <p className=" font-medium text-amber-700">{`${location?.streetAddress}, ${location?.district}`}</p>
           </div>
@@ -67,13 +67,15 @@ const RentalCard: React.FC<RentalCardProps> = ({ property }) => {
               </p>
             </div>
           </div>
-          <div className="px-4 pt-3 pb-4 border-t border-gray-300 bg-gray-100">
+          <div className="px-4 pt-2 pb-2 border-t border-gray-300 bg-gray-100">
             <div className="text-xs uppercase font-bold text-gray-600 tracking-wide">
               Contact
             </div>
-            <div className="flex items-center pt-2">
+            <div className="flex items-center">
               <div>
-                <p className="font-bold text-gray-900">{contact?.name}</p>
+                <p className="font-bold text-sm pt-1 text-gray-900">
+                  {contact?.name}
+                </p>
                 <p className="text-sm text-gray-700">{contact?.phone}</p>
               </div>
             </div>
