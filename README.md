@@ -35,3 +35,8 @@ Welcome to the Rental Management System! This project is designed to streamline 
    ```bash
    https://rental-housing-rosy.vercel.app/
    ```
+2. **Credentials:**
+   ```bash
+   user email: housing@mail.co
+   password: 12345678
+   ```
