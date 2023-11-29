@@ -10,14 +10,18 @@ import DashboardLayout from "@/layout/dashboard/DashboardLayout";
 import { useAppSelector } from "@/redux/hooks";
 import Toast, { toastStyleProperties } from "@/components/shared/Toast";
 import Modal from "@/components/shared/Modal";
+import { useGetUserProfileQuery } from "@/redux/feature/user-profile/user-profile-api";
 
 const ProfilePage: NextPageWithLayout = ({}) => {
   const user = useAppSelector((state: any) => state.user);
-
-  // const { name, email } = user?.user?.data;
   const [modalVisible, setModalVisible] = useState(false);
 
-  console.log("profile user", user);
+  let userEmail = user?.user?.data?.email;
+
+  // !query to get User Profile
+  const { data: userProfileData } = useGetUserProfileQuery({ userEmail });
+
+  console.log("🚀 ~ file: index.tsx:23 ~ userProfileData:", userProfileData);
 
   // update information
   const [formData, setFormData] = useState({

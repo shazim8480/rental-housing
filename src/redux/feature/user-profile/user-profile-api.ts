@@ -1,20 +1,25 @@
-import {
-  GET_ALL_REGISTERED_USERS_URL,
-  REGISTER_USER_URL,
-} from "@/constants/url";
+import { GET_USER_PROFILE_URL, USER_UPDATE_PROFILE_URL } from "@/constants/url";
 import { api } from "@/redux/api/apiSlice";
 
 const userProfileApi = api.injectEndpoints({
   endpoints: (builder) => ({
+    getUserProfile: builder.query({
+      query: ({ userEmail }) => ({
+        url: GET_USER_PROFILE_URL + "?email=" + userEmail,
+        method: "GET",
+      }),
+      providesTags: ["userProfileData"],
+    }),
     updateUserProfile: builder.mutation({
       query: (data) => ({
-        url: `${REGISTER_USER_URL}`,
-        method: "POST",
+        url: `${USER_UPDATE_PROFILE_URL}`,
+        method: "PUT",
         body: data,
       }),
-      //   invalidatesTags: ["userProfileData"],
+      invalidatesTags: ["userProfileData"],
     }),
   }),
 });
 
-export const { useUpdateUserProfileMutation } = userProfileApi;
+export const { useUpdateUserProfileMutation, useGetUserProfileQuery } =
+  userProfileApi;

@@ -335,7 +335,7 @@ PropertyDetailsPage.getLayout = function (page: ReactElement) {
 export const getServerSideProps = (async (context) => {
   const { params } = context;
   const res = await fetch(
-    `https://rental-housing-server.onrender.com/api/property/${params?.propertyID}`
+    `http://localhost:8000/api/property/${params?.propertyID}`
   );
   const propertyDetails: IProperty = await res.json();
 
